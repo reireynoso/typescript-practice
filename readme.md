@@ -58,6 +58,8 @@ console.log(add(2, '3'));
     - `boolean` => true or false
     - `object` => `{age: 30}` Any JS object, more specific types (type of object) are possible.
     - `array` => `[1,2,3]` any JS array, type can be flexible or strict(regarding the element types)
+    - `tuple` => `[1,2]` added by TS: Fixed array length
+    - `enum` => `enum {NEW, OLD}` does not exist in JS. Added by TS: automatically enumerated global constant identifiers.
 - TS is `statically` typed where we define types of variables and parameters during development. They don't suddent change during runtime
 - Key difference: JS uses `dynamic` types (resolved at runtime) and TS uses `static` types (set during development)
 - We don't have explicit type of assignments to variables because TS has a built-in feature which is called `type inference`. Means TS does its best to understand which type you have in a certain variable or a constant. We can assign the name of the type after declaring the variable
@@ -76,7 +78,9 @@ resultPhrase = true; // will also throw an error. TS in infering based on the in
 
 const person: {
 //     name: string,
-//     age: number
+//     age: number,
+//     hobbies: string[];
+//     role: [number, string] // marks a tuple
 // } = {
     name: "Rei",
     age: 14,
@@ -88,6 +92,12 @@ favHobs = ["food", "games"];
 
 console.log(person.nickname); // does not exist
 
+// person.role.push('admin') // works
+// person.role[1] = 10; // does not work since TS is expecting the second element to be a string
+
+// person.role = [] // does not work since it's referring the elements cnnot be empty
+person.role = [0, 'admin'] // works since it follows the initial blueprint
+
 for(const hobby of person.hobbies){
     console.log(hobby);
     // console.log(hobby.map()) // error since TS is infering hobby is a string and not an array.
@@ -96,3 +106,30 @@ for(const hobby of person.hobbies){
 - With TS, we have object types. Key value pairs of property and its type by default. To ensure TS only cares that it's an object, can assign property to the assignment. But TS would not know the information inside the object.
 - Assign to empty curly brace. TS's notation of a specialized object type, where we provide some information about the structure of the object. In that object, we are explicitly assigning the types. Not good practice since TS can infer that
 - With array, TS infers the array type based on the types inside of the array. Can contain mixed. Can explicitly state, `favHobs: any[]` to state mixed array. For specifics `favHobs: string[]`;
+- `Tuple` is a special construct typescript could understand. In JS, it's a normal array. `Tuples` tells TS that we want to have a special array with exactly two element, w/ first element being number and second element being string. (Refer to top sample)
+- Loosely related to the idea of tuple is the idea of having a couple of specific identifiers global constant that might be present in the app which might want to represent as numbers but to which you want to assign a human-readable label. We have the `enum`
+```js
+// enum sample
+// keep track of admin status. Instead of this,
+// const admin = 0;
+// const read_only = 1;
+// const author = 2;
+
+enum Role {
+    admin,
+    read_only,
+    author
+}; // behind the scenes each receives 0,1,2 in order
+
+const person = {
+    name: "Rei",
+    age: 14,
+    hobbies: ['Food', "Games"],
+    role: Role.admin
+};
+
+if(person.role === Role.admin){
+    console.log('user is admin');
+}
+
+```
