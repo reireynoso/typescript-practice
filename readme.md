@@ -60,6 +60,7 @@ console.log(add(2, '3'));
     - `array` => `[1,2,3]` any JS array, type can be flexible or strict(regarding the element types)
     - `tuple` => `[1,2]` added by TS: Fixed array length
     - `enum` => `enum {NEW, OLD}` does not exist in JS. Added by TS: automatically enumerated global constant identifiers.
+    - `any` => `*` most flexible type. This type doesn't tell TS anything. Any kind of value, no specifc type assignment. Takes away any advantage TS gives. Want to avoid. Can use as fallback when you don't know what the data will be stored.
 - TS is `statically` typed where we define types of variables and parameters during development. They don't suddent change during runtime
 - Key difference: JS uses `dynamic` types (resolved at runtime) and TS uses `static` types (set during development)
 - We don't have explicit type of assignments to variables because TS has a built-in feature which is called `type inference`. Means TS does its best to understand which type you have in a certain variable or a constant. We can assign the name of the type after declaring the variable
@@ -132,4 +133,24 @@ if(person.role === Role.admin){
     console.log('user is admin');
 }
 
+```
+- `Union` type. Where a function can accept two different types of values. Using `|` symbol to indicate either types as input
+```js
+function combine(input1: (number | string), input2: number | string){
+    let result;
+    if(typeof input1 === 'number' && typeof input2 === 'number'){
+        result = input1 + input2
+    }else{
+        result = input1.toString() + input2.toString();
+    }
+    return result; 
+}
+
+const combinedAges = combine(30,26);
+
+console.log(combinedAges);
+
+const combinedNames = combine("Rei","Hey");
+
+console.log(combinedNames);
 ```
