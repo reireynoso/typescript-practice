@@ -1,14 +1,17 @@
-function combine(input1, input2) {
-    var result;
-    if (typeof input1 === 'number' && typeof input2 === 'number') {
-        result = input1 + input2;
-    }
-    else {
-        result = input1.toString() + input2.toString();
-    }
-    return result;
+"use strict";
+var userInput; // cannot declare yet what user types. Similar to any
+var userName;
+// with unknown type, can reassign to any type
+if (typeof userInput === 'string') {
+    userName = userInput;
 }
-var combinedAges = combine(30, 26);
-console.log(combinedAges);
-var combinedNames = combine("Rei", "Hey");
-console.log(combinedNames);
+// userName = userInput;
+// but the diff between unknown and any is the unknown type will stricter. Any is more flexible.
+function generateError(message, code) {
+    throw { message: message, errorCode: code };
+    // another one would be an infinite loop
+    //while(true){}
+}
+// function never produces a return result. The throw crashes the script
+var results = generateError('An Error Occured', 500);
+console.log(results);

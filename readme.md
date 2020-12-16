@@ -28,6 +28,7 @@ function add(num1:number,num2:number){
 console.log(add(2, '3'));
 ```
 - To run file, `tsc filename.ts`. By default TS will still compile it to JS. When compiled to JS, TS is stripped out and we get vanilla JS.
+- Can also enter `watch` mode so it automatically watches for any changes in the file and reload. `tsc app.js -w`
 - TS Overview. It adds:
     - Types => we have to more explicit about how things work and avoid many unexpected errors using types. Can use more IDEs which have built in types of support which can pick up on these types and give better auto completion and built-in errors before compiling
     - Next gen JS features (compiled down for older Browsers) => Can write JS features in TS files and then it gets compiles down to JS code to workarounds that work in older browsers. Similar to Babel but built-in to TS.
@@ -36,6 +37,25 @@ console.log(add(2, '3'));
     - Rich configuration options => add rules to make it behave that way you want it too
     - modern tooling that helps even in non-ts projects 
 
+# Compiling the Entire Project
+- `tsc --init` no specific file. Creates `tsconfig.json`
+- `tsc` creates a js file for all
+- `tsc --watch` watches all files
+
+# Include/Exclude
+- In the `tsconfig.json`, for `"exlucde": []`, can include paths in the array of files you don't want
+```js
+"exclude": [
+    "union-aliases.ts",
+    "*.dev.ts", // wildcard. ignore any file that ends with .dev.ts
+    "**/*.dev.ts" //any file with that pattern in any folder will be ignored
+    "node_modules" // would be default
+]
+"include:[
+    "app.ts",
+    "analytics.ts"
+]" //opposite. which files would want to be part of the compilation
+```
 # Outline
 - TypeScript Basics
 - Compiler & Configuration Deep Dive
@@ -154,3 +174,116 @@ const combinedNames = combine("Rei","Hey");
 
 console.log(combinedNames);
 ```
+- `Literal Types` types where you don't say that certain variable or parameter should a number or string but are clear about the exact value it should hold.
+```js
+function combine(input1: (number | string), input2: number | string, resultConversion: 'as-number' | 'as-text'){  // for the third arg, we are allowing string but strictly those strings defined using union types
+    let result;
+    if(typeof input1 === 'number' && typeof input2 === 'number' || resultConversion === 'as-number'){
+        result = +input1 + +input2 // converts into number
+    }else{
+        result = input1.toString() + input2.toString();
+    }
+    return result
+    // if(resultConversion === 'as-number'){
+    //     return +result; // parses into number
+    // }
+    // else{
+    //     return result.toString();
+    // }
+
+    // return result; 
+}
+
+const combinedAges = combine(30,26, 'as-number');
+
+console.log(combinedAges);
+
+const combinedStringAges = combine('30', '26', 'as-number');
+console.log(combinedStringAges);
+
+const combinedNames = combine("Rei","Hey", "as-text");
+
+console.log(combinedNames);
+```
+- Type `aliases`. Storing `union` types in a variable.
+
+# Function Return Types and Void
+- Based on the parameters passed in, TS can infer what type the funtion will return byt default.
+- You can define the type the function returns after the parenthesis. Same thing as infering.
+- `void` is the standard for a function that doesn't return anything in TS
+```js
+// function return types and void
+
+function add(n1: number, n2: number){
+    return n1 + n2
+}
+
+// Void type. Doesn't return anything
+function printResult(num:number){
+    console.log('Result ' + num)
+}
+
+console.log(printResult(add(4,12)))
+```
+
+# Function Types
+- `Function` types are types that describe a function regarding the parameters and the return value of that function. 
+```js
+function add(n1: number, n2: number){
+    return n1 + n2
+}
+
+// Void type. Doesn't return anything
+function printResult(num:number){
+    console.log('Result ' + num)
+}
+printResult(add(4,12));
+
+// let combineValues:Function; // can be explicit and state undefined variable will be a function.
+// combineValues = add;
+// combineValues = printResult; // TS won;t be able to detect the difference and can result in error during runtime.
+
+let combineValues: (a:number, b:number) => number; // describe the function parameter
+combineValues = add;
+console.log(combineValues(8,8))
+```
+
+# Function Types and Callbacks
+```js
+function addAndHandle(n1:number, n2:number, cb:(num:number) => void){
+    const result = n1 + n2;
+    cb(result);
+}
+
+addAndHandle(10,20, (result) => {
+    console.log(result); // no type necessary. Defined earlier
+    // callback won't do anything with the value returned since it was void
+})
+```
+
+# The Unknown Type
+```js
+let userInput: unknown; // cannot declare yet what user types. Similar to any
+let userName:string;
+// with unknown type, can reassign to any type
+if(typeof userInput === 'string'){
+    userName = userInput;
+}
+// userName = userInput;
+// but the diff between unknown and any is the unknown type will stricter. Any is more flexible.
+```
+
+# The Never Type
+- `never` is another type functions can return
+```js
+function generateError(message:string, code: number):never{
+    throw {message: message, errorCode:code};
+    // another one would be an infinite loop
+    //while(true){}
+}
+// function never produces a return result. The throw crashes the script
+
+const result = generateError('An Error Occured', 500);
+console.log(result)
+```
+
