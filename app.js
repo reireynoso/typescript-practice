@@ -1,6 +1,6 @@
 "use strict";
-var userInput; // cannot declare yet what user types. Similar to any
-var userName;
+let userInput; // cannot declare yet what user types. Similar to any
+let userName;
 // with unknown type, can reassign to any type
 if (typeof userInput === 'string') {
     userName = userInput;
@@ -13,5 +13,9 @@ function generateError(message, code) {
     //while(true){}
 }
 // function never produces a return result. The throw crashes the script
-var results = generateError('An Error Occured', 500);
+const results = generateError('An Error Occured', 500);
 console.log(results);
+const button = document.querySelector('button');
+button.addEventListener('click', () => {
+    console.log('Clicked');
+});

@@ -16,3 +16,9 @@ function generateError(message:string, code: number):never{
 
 const results = generateError('An Error Occured', 500);
 console.log(results)
+
+const button = document.querySelector('button')!;
+
+button.addEventListener('click', () => {
+    console.log('Clicked');
+})

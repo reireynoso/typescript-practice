@@ -56,6 +56,34 @@ console.log(add(2, '3'));
     "analytics.ts"
 ]" //opposite. which files would want to be part of the compilation
 ```
+
+# Setting a Compilation Target
+- `compilerOptions` in `tsconfig.json` allows us to control how out TS code is compiled. Not just which ones get compiled but also how the ones that are compiled are treated by TS. 
+- `target` which JS option you want to compile. Default `es5`.
+```js
+"lib": [
+      "DOM",
+      "ES6",
+      "DOM.Iterable",
+      "ScriptHost"
+    ],      
+```
+
+# More Options 
+- With `allowJs` and `checkJS`, can include JS file in the compilation.
+- `jsx` deals with react js
+- `declaration` and `declarationMap` 
+
+# Source Map
+- Helps with debugging and development
+- Generates a `.map` file. Acts as a bridge which is understood by modern browsers and dev tools to connect the JS files to the input files
+
+# Rootdir and Outdir
+- `outDir` tell TS where to compile and send the JS files to. Structure `src` and `dist`
+- With `rootDir`, tell TS where the files we want compiled are located
+# Understanding TS Libs
+- `lib` option that allows you to specify which default objects an features TS knows. Things like working on DOM
+- If it is not set, by default it depends on the target definition. 
 # Outline
 - TypeScript Basics
 - Compiler & Configuration Deep Dive
