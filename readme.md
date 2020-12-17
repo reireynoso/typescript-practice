@@ -315,3 +315,5 @@ const result = generateError('An Error Occured', 500);
 console.log(result)
 ```
 
+# React Bootstrap with TypeScript
+- Run `npx create-react-app my-app --template typescript`
