@@ -5,8 +5,9 @@ import {fetchQuizQuestions} from './API';
 import {QuestionState,Difficulty} from './API'
 //components
 import QuestionCard from './components/QuestionCard';
-
-type AnswerObject = {
+// styles
+import {GlobalStyle, Wrapper} from './App.styles'
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
@@ -75,8 +76,10 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <>
       <h1>React Quiz</h1>
+      <GlobalStyle/>
+      <Wrapper/>
       {
         gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
           <button className="start" onClick={startTrivia}>
@@ -86,7 +89,7 @@ const App = () => {
         null
       }
       {
-        !gameOver ? <p className="score">Score:</p> : null
+        !gameOver ? <p className="score">Score: {score}</p> : null
       }
       {
         loading && <p>Loading Questions...</p> //: null
@@ -109,7 +112,7 @@ const App = () => {
         : null
       }
      
-    </div>
+    </>
   );
 }
 
