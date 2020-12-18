@@ -37,7 +37,9 @@ export const ButtonWrapper = styled.div<ButtonWrapperProps>`
             correct 
             ? 'linear-gradient(90deg, #56FFA4, #59BC86)'
             : !correct && userClicked
+            // user got the answer incorrect and clicked
             ? 'linear-gradient(90deg,#FF5656, #C16868)'
+            // user did not click an answer yet. or default
             : 'linear-gradient(90deg,#56ccff, #6eafb4)'
         };
         border: 3px solid #ffffff;
